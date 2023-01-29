@@ -9,28 +9,14 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.x
-    - name: Download tokei binaries    
-      uses: robinraju/release-downloader@v1
-      with:
-        repository:  XAMPPRocky/tokei
-        latest: true
-        fileName: tokei-x86_64-pc-windows-msvc.exe
-        out-file-path: Artifacts
-    - name: Replace tokei binaries
-      uses: Amadevus/pwsh-script@v2.0.1
-      with:
-        script: |
-          Remove-Item 'Cloc/tokei-x86_64-pc-windows-msvc.exe'
-          Copy-Item 'Artifacts/tokei-x86_64-pc-windows-msvc.exe' 'Cloc/tokei-x86_64-pc-windows-msvc.exe'
+        dotnet-version: 6
+        dotnet-quality: 'ga'
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
