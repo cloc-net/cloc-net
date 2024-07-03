@@ -15,7 +15,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6
+        dotnet-version: 8
         dotnet-quality: 'ga'
     - name: Restore dependencies
       run: dotnet restore
@@ -23,8 +23,12 @@ jobs:
       run: dotnet build --no-restore --configuration Release
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal
+    - name: Publish Cli
+      run: dotnet publish Cloc.Cli/Cloc.Cli.csproj -c Release -p:PublishSingleFile=true --self-contained true --runtime win-x64
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: cloc
-        path: Cloc/bin/Release
+        path: |
+          Cloc/bin/Release
+          Cloc.Cli/bin/Release/net8.0-windows/win-x64/publish/cloc-net.exe
